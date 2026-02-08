@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="admin-container">
+  <h2>Admin Login</h2>
+
+  <input type="email" id="adminEmail" placeholder="Email">
+  <input type="password" id="adminPassword" placeholder="Password">
+  <button onclick="login()">Login</button>
+
+  <div id="dashboard" style="display:none;">
+    <h2>Dashboard</h2>
+    <button onclick="logout()">Logout</button>
+
+    <h3>Add Product</h3>
+    <input type="text" id="productName" placeholder="Name">
+    <input type="text" id="productCategory" placeholder="Category">
+    <input type="number" id="productPrice" placeholder="Price">
+    <input type="text" id="productDescription" placeholder="Description">
+    <input type="text" id="productImageUrl" placeholder="Image URL">
+    <button onclick="addProduct()">Add Product</button>
+  </div>
+
+<script type="module" src="js/firebase-config.js"></script>
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>
