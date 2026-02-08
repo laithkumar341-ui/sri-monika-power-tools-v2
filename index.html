@@ -348,7 +348,7 @@
 
         .technical-card-2 .stat-label { color: rgba(255,255,255,0.7); }
 
-        /* Products Section - Dynamic Grid */
+        /* Products Section - 3 Column Grid */
         .products {
             padding: 120px 48px;
             position: relative;
@@ -362,7 +362,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            max-width: 1200px;
+            max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -403,30 +403,32 @@
             font-family: 'Space Mono', monospace;
         }
 
+        /* 3 Column Product Grid */
         #products-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2px;
-            max-width: 1200px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: var(--border);
-            border: 2px solid var(--text-primary);
         }
 
         .product-card {
             background: var(--bg-primary);
+            border: 2px solid var(--text-primary);
             overflow: hidden;
             transition: all 0.4s;
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.05);
         }
 
-        .product-card:hover { background: var(--bg-secondary); }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 12px 12px 0px var(--accent);
+        }
 
         .product-image-wrap {
-            height: 100%;
-            min-height: 300px;
+            height: 280px;
             background: repeating-linear-gradient(
                 45deg,
                 transparent,
@@ -439,23 +441,25 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            border-right: 2px solid var(--border);
+            border-bottom: 2px solid var(--border);
         }
 
         .product-image-wrap img {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 85%;
+            max-height: 85%;
             object-fit: contain;
             transition: all 0.6s;
         }
 
-        .product-card:hover .product-image-wrap img { transform: scale(1.05); }
+        .product-card:hover .product-image-wrap img { 
+            transform: scale(1.08) rotate(-2deg);
+        }
 
         .product-badge {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 8px 16px;
+            top: 16px;
+            left: 16px;
+            padding: 6px 14px;
             background: var(--accent);
             color: white;
             font-family: 'Space Mono', monospace;
@@ -467,17 +471,17 @@
         }
 
         .product-info {
-            padding: 40px;
+            padding: 28px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            flex-grow: 1;
         }
 
         .product-title {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(24px, 3vw, 36px);
+            font-size: 28px;
             font-weight: 400;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--text-primary);
@@ -485,42 +489,28 @@
         }
 
         .product-desc {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-secondary);
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            flex-grow: 1;
         }
 
-        .product-features {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .feature-tag {
-            font-family: 'Space Mono', monospace;
-            font-size: 12px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
+        .product-price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--accent);
+            margin-bottom: 16px;
             letter-spacing: 1px;
         }
 
-        .feature-tag::before {
-            content: '▸';
-            color: var(--accent);
-            font-weight: bold;
-        }
-
         .whatsapp-btn {
-            padding: 12px 24px;
+            width: 100%;
+            padding: 14px;
             background: #25D366;
             border: 2px solid #25D366;
             color: white;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
@@ -529,9 +519,9 @@
             font-family: 'Space Mono', monospace;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             text-decoration: none;
-            width: fit-content;
             clip-path: polygon(0 0, 100% 0, 100% 75%, 95% 100%, 0 100%);
         }
 
@@ -548,6 +538,7 @@
             text-align: center;
             font-family: 'Space Mono', monospace;
             background: var(--bg-primary);
+            border: 2px solid var(--text-primary);
         }
 
         .error-state { color: #dc2626; }
@@ -1207,16 +1198,28 @@
         }
 
         /* Mobile Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
+            #products-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
             .hero-container { grid-template-columns: 1fr; text-align: center; gap: 40px; }
             .hero-content { border-left: none; border-top: 4px solid var(--accent); padding-left: 0; padding-top: 40px; order: 2; }
             .hero-visual { order: 1; padding: 20px; }
             .hero-image-wrapper { max-width: 400px; box-shadow: 10px 10px 0px var(--accent); margin: 0 auto; }
             .technical-card { display: none; }
             
-            #products-container { grid-template-columns: 1fr; border: none; background: transparent; gap: 24px; }
-            .product-card { grid-template-columns: 1fr; border: 2px solid var(--text-primary); }
-            .product-image-wrap { border-right: none; border-bottom: 2px solid var(--border); min-height: 250px; }
+            #products-container { 
+                grid-template-columns: 1fr; 
+                gap: 24px;
+            }
+            .product-card { 
+                max-width: 400px; 
+                margin: 0 auto;
+                width: 100%;
+            }
             
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .services-grid { grid-template-columns: 1fr; border: none; background: transparent; gap: 16px; }
@@ -1243,6 +1246,8 @@
             .nav-links, .nav-cta { display: none; }
             
             .why-buy-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .section-header { flex-direction: column; text-align: center; gap: 20px; }
+            .section-subtitle { text-align: center; }
         }
 
         @media (max-width: 640px) {
@@ -1325,7 +1330,7 @@
         </div>
     </section>
 
-    <!-- Products Section - Dynamic -->
+    <!-- Products Section - Dynamic 3 Column -->
     <section class="products" id="products">
         <div class="section-header">
             <div>
@@ -1695,10 +1700,7 @@
                         <div class="product-info">
                             <h3 class="product-title">${product.name}</h3>
                             <p class="product-desc">${description}</p>
-                            <div class="product-features">
-                                <span class="feature-tag">${price}</span>
-                                <span class="feature-tag">In Stock</span>
-                            </div>
+                            <div class="product-price">${price}</div>
                             <a href="https://wa.me/919344262483?text=Hi, I'm interested in ${encodeURIComponent(product.name)}. Please share more details and price." target="_blank" class="whatsapp-btn">
                                 <i class="fab fa-whatsapp"></i> Order Now
                             </a>
