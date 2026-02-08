@@ -1,32 +1,217 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Sri Monika Power Tools</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #1c1917;
+      margin-bottom: 30px;
+      border-bottom: 3px solid #ea580c;
+      padding-bottom: 10px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #ea580c;
+    }
+    button {
+      background: #ea580c;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: 0.3s;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background: #9a3412;
+      transform: translateY(-2px);
+    }
+    button.secondary {
+      background: #666;
+    }
+    button.secondary:hover {
+      background: #444;
+    }
+    #dashboard { margin-top: 30px; }
+    .form-group { margin-bottom: 20px; }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #444;
+      font-size: 0.9rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #666;
+      text-decoration: none;
+    }
+    .back-link:hover { color: #ea580c; }
+    #loginForm { margin-bottom: 20px; }
+  </style>
 </head>
 <body>
 
-<div class="admin-container">
-  <h2>Admin Login</h2>
-
-  <input type="email" id="adminEmail" placeholder="Email">
-  <input type="password" id="adminPassword" placeholder="Password">
-  <button onclick="login()">Login</button>
-
-  <div id="dashboard" style="display:none;">
-    <h2>Dashboard</h2>
-    <button onclick="logout()">Logout</button>
-
-    <h3>Add Product</h3>
-    <input type="text" id="productName" placeholder="Name">
-    <input type="text" id="productCategory" placeholder="Category">
-    <input type="number" id="productPrice" placeholder="Price">
-    <input type="text" id="productDescription" placeholder="Description">
-    <input type="text" id="productImageUrl" placeholder="Image URL">
-    <button onclick="addProduct()">Add Product</button>
+<div class="container">
+  <a href="index.html" class="back-link">← Back to Website</a>
+  
+  <div id="loginForm">
+    <h2>Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Email address">
+    <input type="password" id="adminPassword" placeholder="Password">
+    <button onclick="login()">Login</button>
   </div>
 
-<script type="module" src="js/firebase-config.js"></script>
-<script type="module" src="js/admin.js"></script>
+  <div id="dashboard" style="display:none;">
+    <h2>Add New Product</h2>
+    <button onclick="logout()" class="secondary" style="float: right; margin-top: -50px;">Logout</button>
+    
+    <div class="form-group">
+      <label>Product Name *</label>
+      <input type="text" id="productName" placeholder="e.g., Bosch 13mm Drill Machine">
+    </div>
+    
+    <div class="form-group">
+      <label>Category *</label>
+      <input type="text" id="productCategory" placeholder="e.g., Drill Machine, Grinder, Cutter">
+    </div>
+    
+    <div class="form-group">
+      <label>Price (₹) *</label>
+      <input type="number" id="productPrice" placeholder="e.g., 4500">
+    </div>
+    
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="productDescription" rows="3" placeholder="Brief description of the product..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Image URL *</label>
+      <input type="text" id="productImageUrl" placeholder="https://example.com/image.jpg">
+      <small style="color: #666; font-size: 0.85rem;">Use direct image links (GitHub raw URLs, Imgur, etc.)</small>
+    </div>
+    
+    <button onclick="addProduct()">Add Product</button>
+    <button onclick="window.open('index.html', '_blank')" class="secondary">View Website</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC6xwCOI8p7NW9X6Zf4J0o6W1LPV73j8NQ",
+  authDomain: "sri-monika-power-tools.firebaseapp.com",
+  projectId: "sri-monika-power-tools",
+  storageBucket: "sri-monika-power-tools.firebasestorage.app",
+  messagingSenderId: "656947936561",
+  appId: "1:656947936561:web:b527d9fdc7f4ad7f6c0410"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Check auth state
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+  } else {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('dashboard').style.display = 'none';
+  }
+});
+
+window.login = async function() {
+  const email = document.getElementById("adminEmail").value;
+  const password = document.getElementById("adminPassword").value;
+  
+  if (!email || !password) {
+    alert("Please enter both email and password");
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    alert("Login failed: " + error.message);
+  }
+};
+
+window.logout = async function() {
+  await signOut(auth);
+};
+
+window.addProduct = async function() {
+  const name = document.getElementById("productName").value.trim();
+  const category = document.getElementById("productCategory").value.trim();
+  const price = document.getElementById("productPrice").value;
+  const description = document.getElementById("productDescription").value.trim();
+  const imageUrl = document.getElementById("productImageUrl").value.trim();
+
+  if (!name || !category || !price || !imageUrl) {
+    alert("Please fill in all required fields (Name, Category, Price, Image URL)");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "products"), {
+      name,
+      category,
+      price: parseFloat(price),
+      description: description || "Quality power tool",
+      imageUrl,
+      createdAt: new Date()
+    });
+
+    alert("✅ Product added successfully!");
+    
+    // Clear form
+    document.getElementById("productName").value = "";
+    document.getElementById("productCategory").value = "";
+    document.getElementById("productPrice").value = "";
+    document.getElementById("productDescription").value = "";
+    document.getElementById("productImageUrl").value = "";
+    
+  } catch (error) {
+    alert("❌ Error: " + error.message);
+  }
+};
+</script>
+
 </body>
 </html>
