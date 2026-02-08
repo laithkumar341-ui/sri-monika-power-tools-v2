@@ -1,66 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Sri Monika Power Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/firebase-config.js"></script>
-  <script defer src="js/main.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
 
-  <!-- Firebase CDN -->
-  <script type="module" src="js/firebase-config.js"></script>
-<script type="module" src="js/main.js"></script>
+    header {
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .products-section {
+      padding: 30px;
+    }
+
+    .products-section h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #productsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .product-card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .product-card p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .price {
+      font-weight: bold;
+      color: green;
+      font-size: 16px;
+    }
+
+    footer {
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
 </head>
-
 <body>
 
-<header class="navbar">
-  <h2>Sri Monika Power Tools</h2>
-  <nav>
-    <a href="#products">Products</a>
-    <a href="#contact">Contact</a>
-    <a href="admin.html" class="admin-link">Admin</a>
-  </nav>
+<header>
+  <h1>Sri Monika Power Tools</h1>
+  <p>Your Trusted Tools Partner</p>
 </header>
 
-<section class="hero">
-  <div class="hero-content">
-    <h1>Power Your Projects</h1>
-    <p>Professional tools for contractors, electricians and builders.</p>
-    <a href="https://wa.me/919344262483" class="btn-primary">Chat on WhatsApp</a>
-  </div>
-</section>
-
-<section id="products" class="products">
+<section class="products-section">
   <h2>Our Products</h2>
-
-  <div class="filter-bar">
-    <button onclick="filterProducts('all')">All</button>
-    <button onclick="filterProducts('Drill')">Drill</button>
-    <button onclick="filterProducts('Grinder')">Grinder</button>
-    <button onclick="filterProducts('Cutting')">Cutting</button>
-  </div>
-
-  <div id="productsContainer" class="product-grid">
-    <!-- Dynamic products will load here -->
-  </div>
-</section>
-
-<section id="contact" class="contact">
-  <h2>Contact Us</h2>
-  <form id="contactForm">
-    <input type="text" id="name" placeholder="Your Name" required />
-    <input type="text" id="phone" placeholder="Phone Number" required />
-    <textarea id="message" placeholder="Message" required></textarea>
-    <button type="submit" class="btn-primary">Send Message</button>
-  </form>
+  <div id="productsContainer"></div>
 </section>
 
 <footer>
   <p>© 2026 Sri Monika Power Tools</p>
 </footer>
+
+<script type="module" src="js/main.js"></script>
 
 </body>
 </html>
